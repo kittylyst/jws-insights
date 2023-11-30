@@ -5,8 +5,11 @@ import java.io.ByteArrayOutputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.redhat.jws.insights.report.JWSSubreport;
+import com.redhat.jws.insights.report.TomcatReport;
+import com.redhat.jws.insights.report.TomcatSubreport;
+import com.redhat.jws.insights.report.TomcatSubreportSerializer;
 import org.apache.catalina.Globals;
-import org.apache.catalina.LifecycleException;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.juli.logging.Log;
@@ -14,21 +17,13 @@ import org.apache.juli.logging.LogFactory;
 import org.apache.tomcat.util.json.JSONParser;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.redhat.insights.Filtering;
 import com.redhat.insights.config.InsightsConfiguration;
 import com.redhat.insights.jars.ClasspathJarInfoSubreport;
 import com.redhat.insights.logging.InsightsLogger;
 import com.redhat.insights.reports.InsightsReport;
 import com.redhat.insights.reports.InsightsSubreport;
-import com.redhat.jws.insights.InsightsLifecycleListener;
-import com.redhat.jws.insights.TomcatLogger;
-import com.redhat.jws.insights.TomcatReport;
-import com.redhat.jws.insights.TomcatSubreport;
-import com.redhat.jws.insights.TomcatSubreportSerializer;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -69,7 +64,7 @@ public class TomcatInsightsTest extends TestCase {
         subReports.put("jars", jarsSubreport);
         subReports.put("jws", new JWSSubreport(tomcat.getServer(), logger));
         subReports.put("tomcat", tomcatSubreport);
-        InsightsConfiguration configuration = new InsightsLifecycleListener();
+        InsightsConfiguration configuration = new TomcatInsightsConfiguration();
         InsightsReport insightsReport = TomcatReport.of(logger, configuration, subReports);
         try (ByteArrayOutputStream out = new ByteArrayOutputStream();
                 JsonGenerator generator = createFor(insightsReport).writerWithDefaultPrettyPrinter().createGenerator(out)) {
@@ -100,7 +95,7 @@ public class TomcatInsightsTest extends TestCase {
         subReports.put("jars", jarsSubreport);
         subReports.put("jws", new JWSSubreport(tomcat.getServer(), logger));
         subReports.put("tomcat", tomcatSubreport);
-        InsightsConfiguration configuration = new InsightsLifecycleListener();
+        InsightsConfiguration configuration = new TomcatInsightsConfiguration();
         InsightsReport insightsReport = TomcatReport.of(logger, configuration, subReports);
         try (ByteArrayOutputStream out = new ByteArrayOutputStream();
                 JsonGenerator generator = createFor(insightsReport).writerWithDefaultPrettyPrinter().createGenerator(out)) {
@@ -133,7 +128,7 @@ public class TomcatInsightsTest extends TestCase {
         subReports.put("jars", jarsSubreport);
         subReports.put("jws", new JWSSubreport(tomcat.getServer(), logger));
         subReports.put("tomcat", tomcatSubreport);
-        InsightsConfiguration configuration = new InsightsLifecycleListener();
+        InsightsConfiguration configuration = new TomcatInsightsConfiguration();
         InsightsReport insightsReport = TomcatReport.of(logger, configuration, subReports);
         try (ByteArrayOutputStream out = new ByteArrayOutputStream();
                 JsonGenerator generator = createFor(insightsReport).writerWithDefaultPrettyPrinter().createGenerator(out)) {

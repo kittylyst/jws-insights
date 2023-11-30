@@ -1,5 +1,5 @@
 /* Copyright (C) Red Hat 2023 */
-package com.redhat.jws.insights;
+package com.redhat.jws.insights.report;
 
 import org.apache.catalina.Server;
 
